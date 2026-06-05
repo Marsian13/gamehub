@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameHub — The Ultimate Game Palace</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Animated background -->
+  <div class="bg-grid"></div>
+  <div class="particles" id="particles"></div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="logo">
+      <span class="logo-icon">♟</span>
+      <span class="logo-text">Game<span class="accent">Hub</span></span>
+    </div>
+    <nav class="header-nav">
+      <button class="nav-btn" onclick="scrollToGames()">Games</button>
+      <button class="nav-btn" onclick="toggleMusic()" id="music-btn" title="Toggle Music">🔊</button>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="line1">THE ULTIMATE</span>
+        <span class="line2">GAME <span class="neon">PALACE</span></span>
+      </h1>
+      <p class="hero-sub">13 legendary games. Local & online multiplayer. No login required.</p>
+      <button class="cta-btn" onclick="scrollToGames()">
+        <span>Play Now</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+    </div>
+    <div class="hero-visual">
+      <div class="floating-cards">
+        <div class="float-card c1">♠ A</div>
+        <div class="float-card c2">⚔</div>
+        <div class="float-card c3">♟</div>
+        <div class="float-card c4">🎯</div>
+        <div class="float-card c5">♦ K</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Games Grid -->
+  <section class="games-section" id="games">
+    <h2 class="section-title">Choose Your Game</h2>
+    <div class="games-grid" id="games-grid">
+      <!-- Games injected by JS -->
+    </div>
+  </section>
+
+  <!-- Room Join Modal -->
+  <div class="modal-overlay" id="join-modal" style="display:none">
+    <div class="modal">
+      <button class="modal-close" onclick="closeJoinModal()">✕</button>
+      <h3 class="modal-title">Join a Room</h3>
+      <input type="text" id="join-code-input" class="modal-input" placeholder="Enter 6-digit room code" maxlength="6" />
+      <input type="text" id="join-name-input" class="modal-input" placeholder="Your name" maxlength="20" />
+      <button class="modal-btn" onclick="joinRoomFromModal()">Join Game</button>
+    </div>
+  </div>
+
+  <!-- Game Mode Modal -->
+  <div class="modal-overlay" id="mode-modal" style="display:none">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModeModal()">✕</button>
+      <h3 class="modal-title" id="mode-modal-title">Select Mode</h3>
+      <div class="mode-options" id="mode-options"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>🎮 GameHub &mdash; Built for fun. No login, no nonsense.</p>
+  </footer>
+
+  <!-- Background Music (Web Audio API synth - no file needed) -->
+  <audio id="bg-music" loop>
+    <source src="assets/sounds/ambient.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="js/main.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+</body>
+</html>

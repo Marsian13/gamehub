@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Snake — GameHub</title>
+<link rel="stylesheet" href="../../css/main.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+#snake-canvas{display:block;margin:0 auto;border:2px solid var(--accent);border-radius:8px;box-shadow:0 0 30px rgba(0,255,136,0.2);}
+.snake-hud{display:flex;gap:20px;justify-content:center;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.hud-item{font-family:'Orbitron',monospace;font-size:1rem;letter-spacing:2px;}
+.hud-val{color:var(--accent);font-weight:700;}
+.d-pad{display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(3,48px);gap:4px;margin:16px auto 0;width:fit-content;}
+.d-btn{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.d-btn:active{background:rgba(232,184,75,0.2);}
+</style></head><body>
+<div class="bg-grid"></div>
+<header class="site-header"><div class="logo"><span class="logo-icon">♟</span><span class="logo-text">Game<span class="accent">Hub</span></span></div>
+<nav class="header-nav"><button class="nav-btn" onclick="window.location.href='../../index.html'">← Games</button><button class="info-btn" onclick="showInfo()">ⓘ</button></nav></header>
+<main class="game-page"><div class="game-header"><button class="back-btn" onclick="window.location.href='../../index.html'">← Back</button><h1 class="game-title">🐍 SNAKE</h1></div>
+<div class="game-container" style="max-width:700px;margin:0 auto">
+<div class="snake-hud">
+  <div class="hud-item">Score: <span class="hud-val" id="score">0</span></div>
+  <div class="hud-item">Best: <span class="hud-val" id="best">0</span></div>
+  <div class="hud-item">Level: <span class="hud-val" id="level">1</span></div>
+  <button class="btn-primary" id="start-btn" onclick="startGame()" style="padding:8px 24px;font-size:0.85rem">START</button>
+</div>
+<canvas id="snake-canvas" width="500" height="500"></canvas>
+<div class="d-pad" id="dpad">
+  <div></div><button class="d-btn" onclick="setDir(0,-1)">▲</button><div></div>
+  <button class="d-btn" onclick="setDir(-1,0)">◀</button><div></div><button class="d-btn" onclick="setDir(1,0)">▶</button>
+  <div></div><button class="d-btn" onclick="setDir(0,1)">▼</button><div></div>
+</div>
+</div></main>
+<div class="info-panel" id="info-panel" style="display:none"><div class="info-content"><button class="info-close" onclick="hideInfo()">✕</button><h2>🐍 SNAKE</h2><ul>
+<li>Use arrow keys or D-pad to steer the snake.</li><li>Eat apples (🍎) to grow and score points.</li><li>Don't hit the walls or yourself!</li><li>Speed increases every 5 apples.</li></ul></div></div>
+<div class="winner-overlay" id="winner-overlay" style="display:none"><div class="winner-box">
+<div class="winner-trophy">💀</div><div class="winner-title">Game Over!</div>
+<div class="winner-sub" id="final-score"></div>
+<div class="winner-btns"><button class="btn-primary" onclick="startGame()">Play Again</button><button class="btn-secondary" onclick="window.location.href='../../index.html'">Exit</button></div>
+</div></div>
+<script src="../../js/main.js"></script><script src="game.js"></script></body></html>

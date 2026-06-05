@@ -1,0 +1,15 @@
+.ludo-layout { display:flex; gap:24px; align-items:flex-start; justify-content:center; flex-wrap:wrap; }
+.ludo-sidebar { flex:0 0 220px; display:flex; flex-direction:column; gap:16px; }
+.ludo-canvas { border:3px solid var(--accent); border-radius:8px; box-shadow:0 0 40px rgba(232,184,75,0.2); max-width:calc(100vw - 60px); }
+.dice-area { display:flex; flex-direction:column; align-items:center; gap:12px; background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:20px; }
+.dice { font-size:3.5rem; cursor:pointer; transition:transform 0.1s; user-select:none; }
+.dice.rolling { animation:dice-roll 0.4s ease; }
+@keyframes dice-roll { 0%{transform:rotate(0) scale(1)} 25%{transform:rotate(90deg) scale(1.2)} 50%{transform:rotate(180deg) scale(0.9)} 75%{transform:rotate(270deg) scale(1.1)} 100%{transform:rotate(360deg) scale(1)} }
+.player-panel { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:12px; display:flex; align-items:center; gap:10px; }
+.player-panel.active { border-color:var(--accent); box-shadow:0 0 12px rgba(232,184,75,0.2); }
+.player-color-dot { width:20px; height:20px; border-radius:50%; flex-shrink:0; }
+.player-panel-name { font-size:0.9rem; font-weight:700; letter-spacing:1px; }
+.player-panel-tokens { font-size:0.8rem; color:var(--text-secondary); }
+.count-btn { background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text-secondary); padding:8px 20px; border-radius:8px; cursor:pointer; font-family:'Orbitron',monospace; font-size:0.9rem; transition:all 0.2s; }
+.count-btn.active,.count-btn:hover { border-color:var(--accent); color:var(--accent); background:rgba(232,184,75,0.1); }
+@media(max-width:600px){ .ludo-sidebar{flex:0 0 100%; flex-direction:row; flex-wrap:wrap;} }

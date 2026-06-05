@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Memory Match — GameHub</title>
+  <link rel="stylesheet" href="../../css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    .memory-setup{max-width:500px;margin:0 auto;}
+    .memory-meta{display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap;margin-bottom:24px;}
+    .memory-grid{display:grid;gap:10px;max-width:600px;margin:0 auto 24px;}
+    .memory-card{
+      aspect-ratio:1;background:var(--bg-card);border:2px solid var(--border);
+      border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+      font-size:clamp(1.2rem,5vw,2.5rem);transition:transform 0.35s,background 0.2s;
+      transform-style:preserve-3d;user-select:none;
+    }
+    .memory-card.flipped{transform:rotateY(180deg);}
+    .memory-card.matched{background:rgba(0,255,136,0.15);border-color:var(--neon-green);cursor:default;}
+    .memory-card.no-match{animation:card-shake 0.3s ease;}
+    @keyframes card-shake{0%,100%{transform:translateX(0) rotateY(180deg)}25%{transform:translateX(-6px) rotateY(180deg)}75%{transform:translateX(6px) rotateY(180deg)}}
+    .memory-card-back{position:absolute;backface-visibility:hidden;font-size:1.5em;}
+    .memory-card-front{backface-visibility:hidden;transform:rotateY(180deg);}
+    .card-back-icon{font-size:clamp(1rem,4vw,1.8rem);opacity:0.4;}
+    .player-score-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
+    .player-score-chip{background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:10px 20px;font-family:'Orbitron',monospace;font-size:0.85rem;letter-spacing:1px;}
+    .player-score-chip.active{border-color:var(--accent);box-shadow:0 0 12px rgba(232,184,75,0.2);}
+    .player-score-chip span{color:var(--accent);font-weight:700;margin-left:8px;}
+    .count-btn{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text-secondary);padding:8px 18px;border-radius:8px;cursor:pointer;font-family:'Orbitron',monospace;font-size:0.85rem;transition:all 0.2s;}
+    .count-btn.active,.count-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(232,184,75,0.1);}
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <header class="site-header">
+    <div class="logo"><span class="logo-icon">♟</span><span class="logo-text">Game<span class="accent">Hub</span></span></div>
+    <nav class="header-nav"><button class="nav-btn" onclick="window.location.href='../../index.html'">← Games</button><button class="info-btn" onclick="showInfo()">ⓘ</button></nav>
+  </header>
+  <main class="game-page">
+    <div class="game-header"><button class="back-btn" onclick="window.location.href='../../index.html'">← Back</button><h1 class="game-title">🃏 MEMORY MATCH</h1></div>
+    <div class="game-container" id="setup-screen">
+      <div class="player-setup memory-setup">
+        <h2>SETUP</h2>
+        <div style="margin-bottom:16px">
+          <label style="color:var(--text-secondary);font-size:0.85rem;letter-spacing:1px;display:block;margin-bottom:8px">GRID SIZE</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="count-btn active" data-grid="4" onclick="setGrid(4)">4×4</button>
+            <button class="count-btn" data-grid="6" onclick="setGrid(6)">6×6</button>
+          </div>
+        </div>
+        <div style="margin-bottom:16px">
+          <label style="color:var(--text-secondary);font-size:0.85rem;letter-spacing:1px;display:block;margin-bottom:8px">PLAYERS (1–4)</label>
+          <div style="display:flex;gap:8px">
+            <button class="count-btn active" data-n="1" onclick="setPlayers(1)">1</button>
+            <button class="count-btn" data-n="2" onclick="setPlayers(2)">2</button>
+            <button class="count-btn" data-n="3" onclick="setPlayers(3)">3</button>
+            <button class="count-btn" data-n="4" onclick="setPlayers(4)">4</button>
+          </div>
+        </div>
+        <div id="player-inputs" class="players-inputs"></div>
+        <button class="btn-primary" onclick="startGame()" style="width:100%;margin-top:8px">START GAME</button>
+      </div>
+    </div>
+    <div class="game-container" id="game-screen" style="display:none">
+      <div class="memory-meta">
+        <span id="pairs-label" style="color:var(--text-secondary);font-size:0.9rem;letter-spacing:1px"></span>
+        <span id="timer-label" style="font-family:'Orbitron',monospace;color:var(--accent)">00:00</span>
+        <button class="btn-secondary" onclick="newGame()" style="padding:6px 16px;font-size:0.8rem">New Game</button>
+      </div>
+      <div class="player-score-row" id="score-row"></div>
+      <div class="memory-grid" id="grid"></div>
+    </div>
+  </main>
+  <div class="info-panel" id="info-panel" style="display:none">
+    <div class="info-content">
+      <button class="info-close" onclick="hideInfo()">✕</button>
+      <h2>🃏 MEMORY MATCH</h2>
+      <ul>
+        <li>Click any card to flip it over.</li>
+        <li>Click a second card — if they match, both stay face-up.</li>
+        <li>If they don't match, both flip back.</li>
+        <li>Most matches wins in multiplayer!</li>
+        <li>Solo: beat your best time.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="winner-overlay" id="winner-overlay" style="display:none">
+    <div class="winner-box">
+      <div class="winner-trophy">🃏</div>
+      <div class="winner-title" id="winner-title">Completed!</div>
+      <div class="winner-sub" id="winner-sub"></div>
+      <div class="winner-btns"><button class="btn-primary" onclick="newGame()">Play Again</button><button class="btn-secondary" onclick="window.location.href='../../index.html'">Exit</button></div>
+    </div>
+  </div>
+  <script src="../../js/main.js"></script>
+  <script>
+    const EMOJIS=['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐸','🐵','🐔','🐧','🐦','🦆','🦅','🦉','🦇','🐺','🐗','🐴','🦄','🐝','🐛','🦋','🐌','🐞','🎸','🎹','🎺','🎻','🥁','🎭','🎨','🎬','🎤','🎧'];
+    let gridSize=4, numPlayers=1, playerNames, cards, flipped, matched, scores, currentPlayer, canFlip, timerInterval, startTime;
+
+    function setGrid(n){ gridSize=n; document.querySelectorAll('.count-btn[data-grid]').forEach(b=>b.classList.toggle('active',parseInt(b.dataset.grid)===n)); }
+    function setPlayers(n){
+      numPlayers=n;
+      document.querySelectorAll('.count-btn[data-n]').forEach(b=>b.classList.toggle('active',parseInt(b.dataset.n)===n));
+      const el=document.getElementById('player-inputs');
+      el.innerHTML=n===1?'':Array.from({length:n},(_,i)=>`<div class="player-input-row"><span class="player-label" style="color:var(--accent)">P${i+1}</span><input class="player-name-input" id="p${i}-name" value="Player ${i+1}" maxlength="14"/></div>`).join('');
+    }
+
+    function startGame(){
+      playerNames=numPlayers===1?['You']:Array.from({length:numPlayers},(_,i)=>document.getElementById(`p${i}-name`)?.value.trim()||`P${i+1}`);
+      document.getElementById('setup-screen').style.display='none';
+      document.getElementById('game-screen').style.display='block';
+      newGame();
+    }
+
+    function newGame(){
+      const total=gridSize*gridSize;
+      const emojiSet=EMOJIS.slice(0,total/2);
+      cards=shuffle([...emojiSet,...emojiSet]);
+      flipped=[]; matched=[]; scores=Array(numPlayers).fill(0); currentPlayer=0; canFlip=true;
+      document.getElementById('winner-overlay').style.display='none';
+      clearInterval(timerInterval); startTime=Date.now();
+      timerInterval=setInterval(updateTimer,1000);
+      renderScores(); renderGrid();
+    }
+
+    function renderGrid(){
+      const el=document.getElementById('grid');
+      el.style.gridTemplateColumns=`repeat(${gridSize},1fr)`;
+      el.innerHTML=cards.map((_,i)=>`
+        <div class="memory-card${flipped.includes(i)||matched.includes(i)?' flipped':''}${matched.includes(i)?' matched':''}" onclick="flipCard(${i})">
+          <div style="position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.35s">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;backface-visibility:hidden">
+              <span style="font-size:clamp(1rem,4vw,2rem);opacity:0.3">❓</span>
+            </div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;transform:rotateY(180deg)">
+              ${matched.includes(i)||flipped.includes(i)?cards[i]:''}
+            </div>
+          </div>
+        </div>`).join('');
+      // Fix inner div transform (simpler approach)
+      el.querySelectorAll('.memory-card').forEach((card,i)=>{
+        const inner=card.querySelector('div');
+        if(inner) inner.style.transform=(flipped.includes(i)||matched.includes(i))?'rotateY(180deg)':'rotateY(0deg)';
+      });
+      document.getElementById('pairs-label').textContent=`Pairs: ${matched.length/2} / ${cards.length/2}`;
+    }
+
+    function flipCard(i){
+      if(!canFlip||flipped.includes(i)||matched.includes(i)) return;
+      flipped.push(i);
+      renderGrid();
+      if(flipped.length===2){
+        canFlip=false;
+        setTimeout(checkMatch,700);
+      }
+    }
+
+    function checkMatch(){
+      const [a,b]=flipped;
+      if(cards[a]===cards[b]){
+        matched.push(a,b);
+        scores[currentPlayer]++;
+        renderScores();
+        if(matched.length===cards.length){ clearInterval(timerInterval); showWinner(); }
+        else window.GameHub.showToast('Match! ✨');
+      } else {
+        // Wrong — next player
+        currentPlayer=(currentPlayer+1)%numPlayers;
+      }
+      flipped=[]; canFlip=true; renderGrid(); renderScores();
+    }
+
+    function renderScores(){
+      if(numPlayers===1) return;
+      const el=document.getElementById('score-row');
+      el.innerHTML=playerNames.map((n,i)=>`<div class="player-score-chip${i===currentPlayer?' active':''}">P${i+1}: ${n}<span>${scores[i]}</span></div>`).join('');
+    }
+
+    function showWinner(){
+      const elapsed=Math.floor((Date.now()-startTime)/1000);
+      const m=Math.floor(elapsed/60), s=elapsed%60;
+      let title, sub;
+      if(numPlayers===1){ title='Puzzle Complete! 🃏'; sub=`Time: ${m}:${s.toString().padStart(2,'0')}`; }
+      else {
+        const maxScore=Math.max(...scores);
+        const winners=playerNames.filter((_,i)=>scores[i]===maxScore);
+        title=winners.length>1?`Tie! ${winners.join(' & ')}`:`${winners[0]} Wins! 🎉`;
+        sub=playerNames.map((n,i)=>`${n}: ${scores[i]}`).join(' | ');
+      }
+      document.getElementById('winner-title').textContent=title;
+      document.getElementById('winner-sub').textContent=sub;
+      document.getElementById('winner-overlay').style.display='flex';
+    }
+
+    function updateTimer(){
+      const elapsed=Math.floor((Date.now()-startTime)/1000);
+      const m=Math.floor(elapsed/60), s=elapsed%60;
+      document.getElementById('timer-label').textContent=`${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    }
+
+    function shuffle(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr; }
+    function showInfo(){document.getElementById('info-panel').style.display='flex';}
+    function hideInfo(){document.getElementById('info-panel').style.display='none';}
+    setPlayers(1);
+  </script>
+</body>
+</html>

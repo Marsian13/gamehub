@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Chess — GameHub</title>
+  <link rel="stylesheet" href="../../css/main.css"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="bg-grid"></div>
+<header class="site-header">
+  <div class="logo"><span class="logo-icon">♟</span><span class="logo-text">Game<span class="accent">Hub</span></span></div>
+  <nav class="header-nav">
+    <button class="nav-btn" onclick="window.location.href='../../index.html'">← Games</button>
+    <button class="info-btn" onclick="showInfo()">ⓘ</button>
+  </nav>
+</header>
+<main class="game-page">
+  <div class="game-header">
+    <button class="back-btn" onclick="window.location.href='../../index.html'">← Back</button>
+    <h1 class="game-title">♟ CHESS</h1>
+    <button class="btn-secondary" id="undo-btn" onclick="undoMove()" style="margin-left:auto;padding:8px 16px;font-size:0.85rem">↩ Undo</button>
+  </div>
+
+  <!-- Setup -->
+  <div class="game-container" id="setup-screen">
+    <div class="player-setup">
+      <h2>PLAYER SETUP</h2>
+      <div id="player-inputs" class="players-inputs"></div>
+      <button class="btn-primary" onclick="startGame()" style="width:100%;margin-top:8px">START GAME</button>
+    </div>
+  </div>
+
+  <!-- Game -->
+  <div class="game-container" id="game-screen" style="display:none">
+    <div id="online-info"></div>
+    <!-- Turn indicator (mobile + desktop) -->
+    <div class="turn-bar" id="turn-bar">
+      <span class="turn-dot" id="turn-dot"></span>
+      <span id="turn-text">White's Turn</span>
+    </div>
+    <div class="chess-layout">
+      <div class="chess-sidebar left">
+        <div class="player-info" id="black-info">
+          <div class="pi-name" id="black-name">Black ♚</div>
+          <div class="pi-captures" id="black-captures"></div>
+        </div>
+        <div id="move-history" class="move-history"></div>
+      </div>
+      <div class="chess-board-wrap">
+        <div class="chess-board" id="chess-board"></div>
+        <div id="promotion-modal" class="promotion-modal" style="display:none"></div>
+      </div>
+      <div class="chess-sidebar right">
+        <div class="player-info" id="white-info">
+          <div class="pi-name" id="white-name">White ♔</div>
+          <div class="pi-captures" id="white-captures"></div>
+        </div>
+        <div class="game-actions">
+          <button class="btn-secondary" onclick="resetGame()">New Game</button>
+          <button class="btn-secondary" onclick="offerDraw()">Offer Draw</button>
+          <button class="btn-secondary" onclick="resign()">Resign</button>
+        </div>
+        <div id="status-msg" class="status-msg"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Info -->
+<div class="info-panel" id="info-panel" style="display:none">
+  <div class="info-content">
+    <button class="info-close" onclick="hideInfo()">✕</button>
+    <h2>♟ CHESS RULES</h2>
+    <ul>
+      <li><strong>Objective:</strong> Checkmate the opponent's King.</li>
+      <li>Each piece moves uniquely — King, Queen, Rook, Bishop, Knight, Pawn.</li>
+      <li><strong>Check:</strong> King is under attack — must escape.</li>
+      <li><strong>Checkmate:</strong> King can't escape — game over.</li>
+      <li><strong>Special:</strong> Castling, en passant, pawn promotion.</li>
+      <li><strong>AI:</strong> Medium — Minimax + Alpha-Beta, depth 3.</li>
+      <li>Use <strong>↩ Undo</strong> to take back your last move.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Winner -->
+<div class="winner-overlay" id="winner-overlay" style="display:none">
+  <div class="winner-box">
+    <div class="winner-trophy" id="winner-trophy">♔</div>
+    <div class="winner-title" id="winner-title">Game Over</div>
+    <div class="winner-sub" id="winner-sub"></div>
+    <div class="winner-btns">
+      <button class="btn-primary" onclick="resetGame()">Play Again</button>
+      <button class="btn-secondary" onclick="window.location.href='../../index.html'">Exit</button>
+    </div>
+  </div>
+</div>
+
+<script src="../../socket.io/socket.io.js"></script>
+<script src="../../js/main.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

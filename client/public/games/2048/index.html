@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>2048 — GameHub</title><link rel="stylesheet" href="../../css/main.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+.g2048-hud{display:flex;gap:16px;justify-content:center;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.g2048-score{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:10px 20px;text-align:center;}
+.g2048-score-label{font-size:0.7rem;color:var(--text-secondary);letter-spacing:2px;}
+.g2048-score-val{font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:700;color:var(--accent);}
+.g2048-board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:#0a1424;padding:12px;border-radius:12px;border:2px solid var(--border);max-width:360px;margin:0 auto;}
+.g2048-tile{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(1rem,3.5vw,1.6rem);transition:all 0.1s;background:rgba(255,255,255,0.05);color:var(--text-secondary);}
+.t2{background:#eee4da;color:#776e65;}.t4{background:#ede0c8;color:#776e65;}.t8{background:#f2b179;color:#fff;}
+.t16{background:#f59563;color:#fff;}.t32{background:#f67c5f;color:#fff;}.t64{background:#f65e3b;color:#fff;}
+.t128{background:#edcf72;color:#fff;font-size:clamp(0.8rem,2.8vw,1.3rem);}
+.t256{background:#edcc61;color:#fff;font-size:clamp(0.8rem,2.8vw,1.3rem);}
+.t512{background:#edc850;color:#fff;font-size:clamp(0.8rem,2.8vw,1.3rem);}
+.t1024{background:#edc53f;color:#fff;font-size:clamp(0.65rem,2.2vw,1rem);}
+.t2048{background:#edc22e;color:#fff;font-size:clamp(0.65rem,2.2vw,1rem);box-shadow:0 0 30px rgba(237,194,46,0.6);}
+.tile-new{animation:tile-appear 0.15s ease;}
+.tile-merge{animation:tile-merge 0.2s ease;}
+@keyframes tile-appear{from{transform:scale(0.6);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes tile-merge{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.swipe-btns{display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(3,52px);gap:4px;margin:16px auto 0;width:fit-content;}
+.sw-btn{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.sw-btn:active{background:rgba(232,184,75,0.2);}
+</style></head><body>
+<div class="bg-grid"></div>
+<header class="site-header"><div class="logo"><span class="logo-icon">♟</span><span class="logo-text">Game<span class="accent">Hub</span></span></div>
+<nav class="header-nav"><button class="nav-btn" onclick="window.location.href='../../index.html'">← Games</button><button class="info-btn" onclick="showInfo()">ⓘ</button></nav></header>
+<main class="game-page"><div class="game-header"><button class="back-btn" onclick="window.location.href='../../index.html'">← Back</button><h1 class="game-title">🎯 2048</h1></div>
+<div class="game-container" style="max-width:500px;margin:0 auto">
+<div class="g2048-hud">
+  <div class="g2048-score"><div class="g2048-score-label">SCORE</div><div class="g2048-score-val" id="score">0</div></div>
+  <div class="g2048-score"><div class="g2048-score-label">BEST</div><div class="g2048-score-val" id="best">0</div></div>
+  <button class="btn-secondary" onclick="newGame()" style="padding:8px 16px;font-size:0.85rem">New</button>
+  <button class="btn-secondary" onclick="undoMove()" style="padding:8px 16px;font-size:0.85rem">↩ Undo</button>
+</div>
+<div class="g2048-board" id="board"></div>
+<div class="swipe-btns">
+  <div></div><button class="sw-btn" onclick="move('up')">▲</button><div></div>
+  <button class="sw-btn" onclick="move('left')">◀</button><div></div><button class="sw-btn" onclick="move('right')">▶</button>
+  <div></div><button class="sw-btn" onclick="move('down')">▼</button><div></div>
+</div>
+</div></main>
+<div class="info-panel" id="info-panel" style="display:none"><div class="info-content"><button class="info-close" onclick="hideInfo()">✕</button><h2>🎯 2048</h2><ul>
+<li>Swipe or use arrow keys to slide tiles.</li><li>Same numbers merge when they collide.</li><li>Reach the 2048 tile to win!</li><li>You can keep going beyond 2048.</li></ul></div></div>
+<div class="winner-overlay" id="winner-overlay" style="display:none"><div class="winner-box">
+<div class="winner-trophy" id="trophy">🎯</div><div class="winner-title" id="wtitle">Game Over</div>
+<div class="winner-btns"><button class="btn-primary" onclick="newGame()">Play Again</button><button class="btn-secondary" onclick="document.getElementById('winner-overlay').style.display='none'">Keep Going</button></div>
+</div></div>
+<script src="../../js/main.js"></script><script src="game.js"></script></body></html>

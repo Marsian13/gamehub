@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Minesweeper — GameHub</title><link rel="stylesheet" href="../../css/main.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+.ms-controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px;}
+.ms-diff{background:var(--bg-card);border:1px solid var(--border);color:var(--text-primary);padding:8px 14px;border-radius:8px;font-family:'Rajdhani',sans-serif;cursor:pointer;}
+.ms-hud{display:flex;gap:24px;justify-content:center;margin-bottom:16px;font-family:'Orbitron',monospace;}
+.ms-hud span{color:var(--accent);font-weight:700;}
+.ms-board{display:grid;gap:2px;margin:0 auto;width:fit-content;max-width:100%;}
+.ms-cell{width:clamp(24px,6vw,36px);height:clamp(24px,6vw,36px);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:clamp(0.65rem,2vw,0.9rem);font-weight:700;font-family:'Orbitron',monospace;transition:background 0.1s;user-select:none;}
+.ms-cell:hover:not(.revealed):not(.flagged){background:rgba(255,255,255,0.18);}
+.ms-cell.revealed{background:rgba(0,0,0,0.3);cursor:default;border-color:rgba(255,255,255,0.05);}
+.ms-cell.mine-hit{background:rgba(255,50,50,0.6)!important;}
+.ms-cell.flagged{background:rgba(255,200,0,0.15);border-color:rgba(255,200,0,0.4);}
+.n1{color:#58a6ff;}.n2{color:#56d364;}.n3{color:#f85149;}.n4{color:#8957e5;}
+.n5{color:#e3b341;}.n6{color:#39d5ce;}.n7{color:#f0883e;}.n8{color:#a5a5a5;}
+</style></head><body>
+<div class="bg-grid"></div>
+<header class="site-header"><div class="logo"><span class="logo-icon">♟</span><span class="logo-text">Game<span class="accent">Hub</span></span></div>
+<nav class="header-nav"><button class="nav-btn" onclick="window.location.href='../../index.html'">← Games</button><button class="info-btn" onclick="showInfo()">ⓘ</button></nav></header>
+<main class="game-page"><div class="game-header"><button class="back-btn" onclick="window.location.href='../../index.html'">← Back</button><h1 class="game-title">💣 MINESWEEPER</h1></div>
+<div class="game-container" style="max-width:700px;margin:0 auto">
+<div class="ms-controls">
+  <select class="ms-diff" id="diff" onchange="newGame()"><option value="easy">Easy 9×9 (10 mines)</option><option value="medium" selected>Medium 16×16 (40 mines)</option><option value="hard">Hard 16×30 (99 mines)</option></select>
+  <button class="btn-secondary" onclick="newGame()" style="padding:8px 16px;font-size:0.85rem">New Game</button>
+</div>
+<div class="ms-hud"><div>💣 <span id="mines-left">0</span></div><div>⏱ <span id="timer">0</span>s</div><div>🏆 Best: <span id="best-time">—</span></div></div>
+<div class="ms-board" id="board"></div>
+</div></main>
+<div class="info-panel" id="info-panel" style="display:none"><div class="info-content"><button class="info-close" onclick="hideInfo()">✕</button><h2>💣 MINESWEEPER</h2><ul>
+<li>Left-click to reveal a cell.</li><li>Right-click (or long-press) to flag a mine.</li>
+<li>Numbers show how many mines are adjacent.</li><li>Reveal all safe cells to win!</li></ul></div></div>
+<div class="winner-overlay" id="winner-overlay" style="display:none"><div class="winner-box">
+<div class="winner-trophy" id="ms-trophy">🏆</div><div class="winner-title" id="ms-title">You Win!</div>
+<div class="winner-sub" id="ms-sub"></div>
+<div class="winner-btns"><button class="btn-primary" onclick="newGame()">Play Again</button><button class="btn-secondary" onclick="window.location.href='../../index.html'">Exit</button></div>
+</div></div>
+<script src="../../js/main.js"></script><script src="game.js"></script></body></html>

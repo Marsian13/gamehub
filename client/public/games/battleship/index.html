@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Battleship — GameHub</title>
+  <link rel="stylesheet" href="../../css/main.css"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <header class="site-header">
+    <div class="logo"><span class="logo-icon">♟</span><span class="logo-text">Game<span class="accent">Hub</span></span></div>
+    <nav class="header-nav"><button class="nav-btn" onclick="window.location.href='../../index.html'">← Games</button><button class="info-btn" onclick="showInfo()">ⓘ</button></nav>
+  </header>
+  <main class="game-page">
+    <div class="game-header"><button class="back-btn" onclick="window.location.href='../../index.html'">← Back</button><h1 class="game-title">🚢 BATTLESHIP</h1></div>
+    <div class="game-container" id="setup-screen">
+      <div class="player-setup">
+        <h2>SETUP</h2>
+        <div id="player-inputs" class="players-inputs"></div>
+        <button class="btn-primary" onclick="startPlacement()" style="width:100%;margin-top:8px">PLACE SHIPS</button>
+      </div>
+    </div>
+    <div class="game-container" id="placement-screen" style="display:none">
+      <div class="placement-ui">
+        <h2 class="placement-title" id="placement-title">Place Your Ships</h2>
+        <div class="ship-list" id="ship-list"></div>
+        <div class="placement-controls">
+          <button class="btn-secondary" onclick="rotateShip()">↻ Rotate</button>
+          <button class="btn-secondary" onclick="autoPlace()">Auto Place</button>
+          <button class="btn-primary" id="ready-btn" onclick="finishPlacement()" disabled>Ready!</button>
+        </div>
+        <div class="bs-grid-wrap">
+          <div class="bs-grid" id="placement-grid"></div>
+        </div>
+      </div>
+    </div>
+    <div class="game-container" id="game-screen" style="display:none">
+      <div id="online-info"></div>
+      <div class="bs-status" id="bs-status">Your turn — fire!</div>
+      <div class="bs-grids">
+        <div>
+          <div class="bs-grid-label" id="enemy-label">Enemy Waters</div>
+          <div class="bs-grid" id="enemy-grid"></div>
+        </div>
+        <div>
+          <div class="bs-grid-label" id="my-label">Your Fleet</div>
+          <div class="bs-grid" id="my-grid"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;margin-top:20px">
+        <button class="btn-secondary" onclick="location.reload()">New Game</button>
+      </div>
+    </div>
+  </main>
+  <div class="info-panel" id="info-panel" style="display:none">
+    <div class="info-content">
+      <button class="info-close" onclick="hideInfo()">✕</button>
+      <h2>🚢 BATTLESHIP RULES</h2>
+      <ul>
+        <li>Place 5 ships on your 10×10 grid before battle begins.</li>
+        <li>Ships: Carrier(5), Battleship(4), Cruiser(3), Submarine(3), Destroyer(2).</li>
+        <li>Take turns firing at the enemy grid by clicking a cell.</li>
+        <li>🔴 Hit | ⭕ Miss. Sink all enemy ships to win!</li>
+        <li>VS Computer: AI uses hunt/target strategy.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="winner-overlay" id="winner-overlay" style="display:none">
+    <div class="winner-box">
+      <div class="winner-trophy">🏆</div>
+      <div class="winner-title" id="winner-title">Victory!</div>
+      <div class="winner-btns"><button class="btn-primary" onclick="location.reload()">Play Again</button><button class="btn-secondary" onclick="window.location.href='../../index.html'">Exit</button></div>
+    </div>
+  </div>
+  <script src="../../socket.io/socket.io.js"></script>
+  <script src="../../js/main.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

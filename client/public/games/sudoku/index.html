@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sudoku — GameHub</title>
+  <link rel="stylesheet" href="../../css/main.css"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <header class="site-header">
+    <div class="logo"><span class="logo-icon">♟</span><span class="logo-text">Game<span class="accent">Hub</span></span></div>
+    <nav class="header-nav"><button class="nav-btn" onclick="window.location.href='../../index.html'">← Games</button><button class="info-btn" onclick="showInfo()">ⓘ</button></nav>
+  </header>
+  <main class="game-page">
+    <div class="game-container">
+      <div class="sudoku-header">
+        <div class="sudoku-meta">
+          <span>Difficulty: </span>
+          <select id="difficulty" class="difficulty-select" onchange="newGame()">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+        <div class="sudoku-timer" id="timer">00:00</div>
+        <div class="sudoku-actions-top">
+          <button class="btn-secondary" onclick="newGame()" style="padding:8px 16px;font-size:0.85rem">New</button>
+          <button class="btn-secondary" onclick="undoSudoku()" style="padding:8px 16px;font-size:0.85rem">↩ Undo</button>
+          <button class="btn-secondary" onclick="solveSudoku()" style="padding:8px 16px;font-size:0.85rem">Solve</button>
+        </div>
+      </div>
+      <div class="sudoku-errors" id="errors">❌ Mistakes: <span id="mistake-count">0</span>/3</div>
+      <div class="sudoku-board" id="board"></div>
+      <div class="sudoku-numpad" id="numpad"></div>
+      <div class="sudoku-notes-toggle">
+        <label><input type="checkbox" id="notes-mode" onchange="toggleNotes()"> Notes Mode</label>
+      </div>
+    </div>
+  </main>
+  <div class="info-panel" id="info-panel" style="display:none">
+    <div class="info-content">
+      <button class="info-close" onclick="hideInfo()">✕</button>
+      <h2>🔢 SUDOKU RULES</h2>
+      <ul>
+        <li>Fill the 9×9 grid so every row, column, and 3×3 box contains 1–9.</li>
+        <li>Each digit can appear only once in each row, column, and box.</li>
+        <li>Click a cell, then click a number to fill it in.</li>
+        <li>Enable <strong>Notes Mode</strong> to pencil in candidates.</li>
+        <li>3 mistakes = game over. Use Undo to fix errors.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="winner-overlay" id="winner-overlay" style="display:none">
+    <div class="winner-box">
+      <div class="winner-trophy">🧠</div>
+      <div class="winner-title" id="winner-title">Puzzle Solved!</div>
+      <div class="winner-sub" id="winner-sub"></div>
+      <div class="winner-btns"><button class="btn-primary" onclick="newGame()">New Puzzle</button><button class="btn-secondary" onclick="window.location.href='../../index.html'">Exit</button></div>
+    </div>
+  </div>
+  <script src="../../js/main.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

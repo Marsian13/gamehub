@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tic-Tac-Toe — GameHub</title>
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <header class="site-header">
+    <div class="logo"><span class="logo-icon">♟</span><span class="logo-text">Game<span class="accent">Hub</span></span></div>
+    <nav class="header-nav">
+      <button class="nav-btn" onclick="window.location.href='../../index.html'">← Games</button>
+      <button class="info-btn" onclick="showInfo()" title="How to Play">ⓘ</button>
+    </nav>
+  </header>
+
+  <main class="game-page">
+    <div class="game-header">
+      <button class="back-btn" onclick="window.location.href='../../index.html'">← Back</button>
+      <h1 class="game-title">⭕ TIC-TAC-TOE</h1>
+    </div>
+
+    <!-- Setup Screen -->
+    <div class="game-container" id="setup-screen">
+      <div class="player-setup">
+        <h2>PLAYER SETUP</h2>
+        <div class="players-inputs" id="player-inputs"></div>
+        <button class="btn-primary" onclick="startGame()" style="width:100%;margin-top:8px">START GAME</button>
+      </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div class="game-container" id="game-screen" style="display:none">
+      <div id="online-info" style="display:none"></div>
+      <div class="status-bar">
+        <div class="status-item"><div class="status-dot"></div><span id="turn-label">Player 1's turn</span></div>
+        <span id="score-label" style="margin-left:auto; color: var(--accent); font-weight:700; letter-spacing:1px"></span>
+      </div>
+      <div class="ttt-board" id="board"></div>
+      <div class="game-actions">
+        <button class="btn-secondary" onclick="resetGame()">New Game</button>
+        <button class="btn-secondary" onclick="window.location.href='../../index.html'">← Back</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Info Panel -->
+  <div class="info-panel" id="info-panel" style="display:none">
+    <div class="info-content">
+      <button class="info-close" onclick="hideInfo()">✕</button>
+      <h2>⭕ HOW TO PLAY</h2>
+      <ul>
+        <li>Players take turns placing their mark (X or O) on the 3×3 grid.</li>
+        <li>The first player to align 3 marks in a row (horizontal, vertical, or diagonal) wins.</li>
+        <li>If all 9 squares are filled with no winner, the game is a draw.</li>
+        <li><strong>VS Computer:</strong> AI uses minimax algorithm — play smart!</li>
+        <li><strong>Online:</strong> Share the 6-character room code with your friend.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Winner Overlay -->
+  <div class="winner-overlay" id="winner-overlay" style="display:none">
+    <div class="winner-box">
+      <div class="winner-trophy" id="winner-trophy">🏆</div>
+      <div class="winner-title" id="winner-title">Player Wins!</div>
+      <div class="winner-sub" id="winner-sub"></div>
+      <div class="winner-btns">
+        <button class="btn-primary" onclick="resetGame()">Play Again</button>
+        <button class="btn-secondary" onclick="window.location.href='../../index.html'">Exit</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../socket.io/socket.io.js"></script>
+  <script src="../../js/main.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

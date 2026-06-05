@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ludo — GameHub</title>
+  <link rel="stylesheet" href="../../css/main.css"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <header class="site-header">
+    <div class="logo"><span class="logo-icon">♟</span><span class="logo-text">Game<span class="accent">Hub</span></span></div>
+    <nav class="header-nav"><button class="nav-btn" onclick="window.location.href='../../index.html'">← Games</button><button class="info-btn" onclick="showInfo()">ⓘ</button></nav>
+  </header>
+  <main class="game-page">
+    <div class="game-header"><button class="back-btn" onclick="window.location.href='../../index.html'">← Back</button><h1 class="game-title">🎲 LUDO</h1></div>
+    <div class="game-container" id="setup-screen">
+      <div class="player-setup" style="max-width:700px">
+        <h2>GAME SETUP</h2>
+        <div style="margin-bottom:20px">
+          <label style="color:var(--text-secondary);font-size:0.9rem;letter-spacing:1px">NUMBER OF PLAYERS</label>
+          <div style="display:flex;gap:10px;margin-top:10px" id="player-count-btns">
+            <button class="count-btn active" data-n="2" onclick="setPlayerCount(2)">2</button>
+            <button class="count-btn" data-n="3" onclick="setPlayerCount(3)">3</button>
+            <button class="count-btn" data-n="4" onclick="setPlayerCount(4)">4</button>
+          </div>
+        </div>
+        <div id="player-inputs" class="players-inputs"></div>
+        <div style="margin-bottom:20px">
+          <label style="color:var(--text-secondary);font-size:0.9rem;letter-spacing:1px">MODE</label>
+          <div style="display:flex;gap:10px;margin-top:10px">
+            <button class="count-btn active" id="mode-local" onclick="setMode('local')">Local</button>
+            <button class="count-btn" id="mode-online" onclick="setMode('online')">Online</button>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="startGame()" style="width:100%;margin-top:8px">START GAME</button>
+      </div>
+    </div>
+    <div class="game-container" id="game-screen" style="display:none">
+      <div id="online-info"></div>
+      <div class="ludo-layout">
+        <div class="ludo-sidebar">
+          <div id="player-panels"></div>
+          <div id="dice-area" class="dice-area">
+            <div class="dice" id="dice">🎲</div>
+            <button class="btn-primary" id="roll-btn" onclick="rollDice()">ROLL DICE</button>
+          </div>
+        </div>
+        <canvas id="ludo-canvas" class="ludo-canvas"></canvas>
+      </div>
+    </div>
+  </main>
+  <div class="info-panel" id="info-panel" style="display:none">
+    <div class="info-content">
+      <button class="info-close" onclick="hideInfo()">✕</button>
+      <h2>🎲 LUDO RULES</h2>
+      <ul>
+        <li>Roll a 6 to move a token out of home base.</li>
+        <li>Move tokens clockwise around the board based on dice roll.</li>
+        <li>Landing on an opponent sends them back to their base.</li>
+        <li>Safe squares (starred) protect tokens from capture.</li>
+        <li>Get all 4 tokens to the center to win!</li>
+        <li>Rolling a 6 grants an extra turn.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="winner-overlay" id="winner-overlay" style="display:none">
+    <div class="winner-box">
+      <div class="winner-trophy">🏆</div>
+      <div class="winner-title" id="winner-title">Player Wins!</div>
+      <div class="winner-btns"><button class="btn-primary" onclick="location.reload()">Play Again</button><button class="btn-secondary" onclick="window.location.href='../../index.html'">Exit</button></div>
+    </div>
+  </div>
+  <script src="../../socket.io/socket.io.js"></script>
+  <script src="../../js/main.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

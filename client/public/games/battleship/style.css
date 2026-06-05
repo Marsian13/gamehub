@@ -1,0 +1,42 @@
+.bs-grids { display:flex; gap:30px; justify-content:center; flex-wrap:wrap; }
+.bs-grid-label { font-family:'Orbitron',monospace; font-size:0.9rem; letter-spacing:2px; text-align:center; margin-bottom:8px; color:var(--text-secondary); }
+.bs-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 3px;
+  padding: 3px;
+  background: rgba(0,100,200,0.15);
+  border: 2px solid rgba(0,150,255,0.3);
+  border-radius: 8px;
+  width: min(320px, calc(50vw - 40px));
+  height: min(320px, calc(50vw - 40px));
+}
+.bs-cell {
+  background: rgba(0,50,120,0.5);
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex; align-items:center; justify-content:center;
+  font-size: clamp(0.6rem, 2vw, 1rem);
+  transition: all 0.15s;
+  user-select: none;
+}
+.bs-cell:hover:not(.hit):not(.miss) { background: rgba(0,150,255,0.4); }
+.bs-cell.ship { background: rgba(100,150,200,0.4); }
+.bs-cell.ship-placed { background: rgba(70,130,180,0.6) !important; border: 1px solid rgba(100,200,255,0.5); }
+.bs-cell.hit { background: rgba(255,50,50,0.7); }
+.bs-cell.miss { background: rgba(200,200,255,0.15); }
+.bs-cell.sunk { background: rgba(255,0,0,0.5) !important; }
+.bs-cell.hover-preview { background: rgba(100,200,100,0.4) !important; }
+.bs-cell.hover-invalid { background: rgba(255,100,100,0.4) !important; }
+.bs-status { text-align:center; font-family:'Orbitron',monospace; font-size:1rem; letter-spacing:2px; color:var(--accent); margin-bottom:20px; min-height:32px; }
+.placement-ui { max-width:600px; margin:0 auto; }
+.placement-title { font-family:'Orbitron',monospace; color:var(--accent); letter-spacing:2px; margin-bottom:20px; text-align:center; }
+.ship-list { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; justify-content:center; }
+.ship-item { background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:10px 14px; cursor:pointer; font-size:0.85rem; letter-spacing:1px; transition:all 0.2s; display:flex; align-items:center; gap:8px; }
+.ship-item.active { border-color:var(--accent); box-shadow:0 0 12px rgba(232,184,75,0.2); }
+.ship-item.placed { opacity:0.4; cursor:default; text-decoration:line-through; }
+.ship-cells { display:flex; gap:3px; }
+.ship-cell-preview { width:16px; height:16px; background:rgba(70,130,180,0.8); border-radius:2px; border:1px solid rgba(100,200,255,0.5); }
+.placement-controls { display:flex; gap:10px; justify-content:center; margin-bottom:20px; flex-wrap:wrap; }
+.bs-grid-wrap { display:flex; justify-content:center; }
+@media(max-width:700px){ .bs-grid{ width:min(90vw,320px); height:min(90vw,320px); } }

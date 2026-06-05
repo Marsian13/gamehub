@@ -1,0 +1,36 @@
+.checkers-board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  width: min(520px, calc(100vw - 40px));
+  height: min(520px, calc(100vw - 40px));
+  margin: 0 auto 24px;
+  border: 3px solid var(--accent);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(232,184,75,0.2);
+}
+.chk-square {
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; position: relative;
+}
+.chk-square.light { background: #f0d9b5; }
+.chk-square.dark  { background: #7a3a1e; }
+.chk-square.highlight { background: #aef65a !important; }
+.chk-square.possible { background: rgba(100,200,100,0.4) !important; }
+.chk-piece {
+  width: 76%; height: 76%;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 0.2s;
+  border: 3px solid rgba(255,255,255,0.3);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  position: relative;
+  z-index: 2;
+}
+.chk-piece.red { background: radial-gradient(circle at 35% 35%, #ff6b6b, #aa0000); }
+.chk-piece.black { background: radial-gradient(circle at 35% 35%, #555, #111); }
+.chk-piece.selected { transform: scale(1.1); box-shadow: 0 0 20px rgba(255,255,100,0.6); border-color: #ffff00; }
+.chk-piece.king::after { content: '♛'; font-size: 0.7em; position: absolute; color: gold; }

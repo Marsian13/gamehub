@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wordle — GameHub</title>
+  <link rel="stylesheet" href="../../css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    .wordle-board{display:grid;grid-template-rows:repeat(6,1fr);gap:6px;max-width:min(350px,calc(100vw-40px));margin:0 auto 24px;}
+    .wordle-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+    .wordle-tile{
+      aspect-ratio:1;background:var(--bg-card);border:2px solid rgba(255,255,255,0.2);
+      border-radius:6px;display:flex;align-items:center;justify-content:center;
+      font-family:'Orbitron',monospace;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:900;
+      text-transform:uppercase;transition:all 0.1s;position:relative;
+    }
+    .wordle-tile.filled{border-color:rgba(255,255,255,0.5);}
+    .wordle-tile.flip{animation:tile-flip 0.5s ease forwards;}
+    .wordle-tile.correct{background:#538d4e;border-color:#538d4e;color:#fff;}
+    .wordle-tile.present{background:#b59f3b;border-color:#b59f3b;color:#fff;}
+    .wordle-tile.absent{background:#3a3a3c;border-color:#3a3a3c;color:#fff;}
+    .wordle-tile.pop{animation:tile-pop 0.1s ease;}
+    @keyframes tile-flip{0%{transform:rotateX(0)}50%{transform:rotateX(-90deg)}100%{transform:rotateX(0)}}
+    @keyframes tile-pop{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+    .wordle-tile.shake{animation:row-shake 0.4s ease;}
+    @keyframes row-shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+    .keyboard{display:flex;flex-direction:column;gap:8px;max-width:500px;margin:0 auto;}
+    .kb-row{display:flex;gap:5px;justify-content:center;}
+    .kb-key{
+      height:58px;min-width:43px;padding:0 8px;background:#818384;border:none;border-radius:4px;
+      color:white;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;
+      cursor:pointer;transition:all 0.2s;flex:1;max-width:43px;
+    }
+    .kb-key.wide{min-width:65px;max-width:65px;font-size:0.65rem;}
+    .kb-key.correct{background:#538d4e !important;}
+    .kb-key.present{background:#b59f3b !important;}
+    .kb-key.absent{background:#3a3a3c !important;}
+    .kb-key:hover{filter:brightness(1.2);}
+    .wordle-msg{text-align:center;height:36px;font-family:'Orbitron',monospace;font-size:0.9rem;letter-spacing:2px;color:var(--accent);margin-bottom:8px;}
+    .wordle-stats{display:flex;gap:20px;justify-content:center;margin-bottom:20px;}
+    .stat{text-align:center;}
+    .stat-num{font-family:'Orbitron',monospace;font-size:1.8rem;font-weight:900;color:var(--accent);}
+    .stat-label{font-size:0.75rem;color:var(--text-secondary);letter-spacing:1px;}
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <header class="site-header">
+    <div class="logo"><span class="logo-icon">♟</span><span class="logo-text">Game<span class="accent">Hub</span></span></div>
+    <nav class="header-nav"><button class="nav-btn" onclick="window.location.href='../../index.html'">← Games</button><button class="info-btn" onclick="showInfo()">ⓘ</button></nav>
+  </header>
+  <main class="game-page">
+    <div class="game-header"><button class="back-btn" onclick="window.location.href='../../index.html'">← Back</button><h1 class="game-title">💬 WORDLE</h1></div>
+    <div class="game-container" style="max-width:600px;margin:0 auto">
+      <div class="wordle-stats">
+        <div class="stat"><div class="stat-num" id="stat-played">0</div><div class="stat-label">Played</div></div>
+        <div class="stat"><div class="stat-num" id="stat-wins">0</div><div class="stat-label">Wins</div></div>
+        <div class="stat"><div class="stat-num" id="stat-streak">0</div><div class="stat-label">Streak</div></div>
+      </div>
+      <div class="wordle-msg" id="msg"></div>
+      <div class="wordle-board" id="board"></div>
+      <div class="keyboard" id="keyboard"></div>
+      <div style="text-align:center;margin-top:16px">
+        <button class="btn-secondary" onclick="newGame()" style="padding:8px 24px">New Word</button>
+      </div>
+    </div>
+  </main>
+  <div class="info-panel" id="info-panel" style="display:none">
+    <div class="info-content">
+      <button class="info-close" onclick="hideInfo()">✕</button>
+      <h2>💬 WORDLE RULES</h2>
+      <ul>
+        <li>Guess the hidden 5-letter word in 6 tries.</li>
+        <li><strong style="color:#538d4e">Green</strong> = correct letter, correct position.</li>
+        <li><strong style="color:#b59f3b">Yellow</strong> = correct letter, wrong position.</li>
+        <li><strong style="color:#3a3a3c;background:#666;padding:0 4px;border-radius:3px">Grey</strong> = letter not in the word.</li>
+        <li>Each guess must be a valid 5-letter word.</li>
+      </ul>
+    </div>
+  </div>
+  <script src="../../js/main.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
