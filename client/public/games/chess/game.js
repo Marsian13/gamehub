@@ -402,16 +402,48 @@ function orderMoves(moves, state) {
   });
 }
 
+let aiWorker = null;
+
 function doAiMove() {
   if (!aiThinking||gameState.status!=='playing'){aiThinking=false;return;}
+  // Kill previous worker if still running
+  if (aiWorker) { aiWorker.terminate(); aiWorker=null; }
+  try {
+    aiWorker = new Worker('ai-worker.js');
+    aiWorker.onmessage = function(e) {
+      aiWorker=null; aiThinking=false;
+      if (e.data.move && gameState.status==='playing') executeMove(e.data.move);
+      else updateTurnBar();
+    };
+    aiWorker.onerror = function(err) {
+      console.warn('Worker error, falling back:', err);
+      aiWorker=null; doAiFallback();
+    };
+    // Send minimal state (no circular refs)
+    aiWorker.postMessage({
+      state: {
+        board: gameState.board.slice(),
+        turn: gameState.turn,
+        castling: {...gameState.castling},
+        enPassant: gameState.enPassant,
+        captures: {w:[],b:[]}
+      },
+      depth: 3
+    });
+  } catch(e) {
+    // Fallback if workers not supported (e.g. file:// protocol)
+    aiWorker=null; doAiFallback();
+  }
+}
+
+function doAiFallback() {
+  // Depth 2 synchronous fallback
   const moves = orderMoves(getAllLegalMoves(gameState,'b'), gameState);
   if (!moves.length){aiThinking=false;return;}
-
   let best=null, bestScore=-Infinity;
   for (const move of moves) {
     if (move.promotion) move.promotion='Q';
-    const ns=applyMove(gameState,move);
-    const score=minimax(ns,1,-Infinity,Infinity,false);
+    const score=minimax(applyMove(gameState,move),1,-Infinity,Infinity,false);
     if(score>bestScore){bestScore=score;best=move;}
   }
   aiThinking=false;

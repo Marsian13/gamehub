@@ -2,16 +2,18 @@
 <title>Crossword — GameHub</title><link rel="stylesheet" href="../../css/main.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-.cw-layout{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;}
+.cw-layout{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:flex-start;}
+.cw-grid-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;padding-bottom:4px;}
 .cw-grid{display:inline-grid;gap:2px;background:var(--accent);padding:2px;border-radius:4px;box-shadow:0 0 30px rgba(232,184,75,0.2);}
-.cw-cell{width:clamp(28px,6vw,42px);height:clamp(28px,6vw,42px);background:#0d1424;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.75rem,2.5vw,1.1rem);}
+.cw-cell{width:clamp(26px,7vw,40px);height:clamp(26px,7vw,40px);background:#0d1424;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.65rem,2.2vw,1rem);}
 .cw-cell.black{background:#050810;cursor:default;}
 .cw-cell.selected{background:rgba(232,184,75,0.3);}
 .cw-cell.highlighted{background:rgba(0,212,255,0.1);}
 .cw-cell.correct{background:rgba(0,255,136,0.1);}
 .cw-cell input{position:absolute;inset:0;background:transparent;border:none;outline:none;text-align:center;font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(0.75rem,2.5vw,1.1rem);color:var(--neon-blue);text-transform:uppercase;cursor:pointer;}
 .cw-num{position:absolute;top:1px;left:2px;font-size:clamp(0.4rem,1vw,0.55rem);color:var(--accent);font-weight:700;font-family:'Rajdhani',sans-serif;line-height:1;}
-.cw-clues{flex:0 0 280px;max-height:500px;overflow-y:auto;}
+.cw-clues{flex:1 1 240px;max-width:320px;max-height:400px;overflow-y:auto;}
+@media(max-width:600px){.cw-clues{max-width:100%;max-height:220px;flex:1 1 100%;}.cw-layout{gap:12px;}}
 .cw-clues h3{font-family:'Orbitron',monospace;font-size:0.85rem;letter-spacing:2px;color:var(--accent);margin-bottom:10px;margin-top:16px;}
 .cw-clue{padding:8px 10px;border-radius:6px;cursor:pointer;font-size:0.85rem;color:var(--text-secondary);transition:background 0.15s;line-height:1.5;}
 .cw-clue:hover,.cw-clue.active{background:rgba(232,184,75,0.1);color:var(--text-primary);}
@@ -139,6 +141,8 @@ function newPuzzle(){
 function render(){
   const N=puzzle.size;
   const wrap=document.getElementById('grid-wrap');
+  const scrollWrap=document.createElement('div');
+  scrollWrap.className='cw-grid-wrap';
   const gEl=document.createElement('div');
   gEl.className='cw-grid';
   gEl.style.gridTemplateColumns=`repeat(${N},1fr)`;
@@ -163,7 +167,8 @@ function render(){
     }
     gEl.appendChild(cell);
   }
-  wrap.innerHTML=''; wrap.appendChild(gEl);
+  scrollWrap.appendChild(gEl);
+  wrap.innerHTML=''; wrap.appendChild(scrollWrap);
   renderClues();
 }
 
