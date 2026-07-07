@@ -1,6 +1,6 @@
-# 🎮 GameHub — The Ultimate Game Palace
+# 🎮 GameHub - The Ultimate Game Palace
 
-13 browser games with local & online multiplayer. No login required. Progress saved for 24 hours.
+14 browser games with local & online multiplayer. No login required. Progress saved for 24 hours.
 
 ## Games Included
 | Game | Players | Modes |
